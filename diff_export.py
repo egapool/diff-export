@@ -13,19 +13,28 @@ parser = argparse.ArgumentParser()
 parser.add_argument("ver1", 
 					nargs='?',
 					default="head",
-                    help="input commit",
+                    help="Branch Name,Commit Id or ...",
                     type=str)
 parser.add_argument("ver2", 
 					nargs='?',
                     default=argparse.SUPPRESS,
-                    help="input commit",
+                    help="Branch Name,Commit Id or ...",
                     type=str)
+parser.add_argument("-d",
+					help="Directory path where you want to create date folder",
+					nargs='?',
+					type=str
+					)
 arguments = parser.parse_args()
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
 # make dist dir
 dist_dir = base_dir+'/export/'+datetime.now().strftime('%Y%m%d_%H%M%S')
+
+if not arguments.d == None:
+	dist_dir += '/'+arguments.d
+
 os.makedirs(dist_dir)
 
 cmd = ['git','diff','--name-only',arguments.ver1]
